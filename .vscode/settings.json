@@ -1,0 +1,19 @@
+{
+    "editor.tabCompletion": "on",
+    "diffEditor.codeLens": true,
+    "rust-analyzer.linkedProjects": [
+        ".\\rust-serial\\Cargo.toml",
+        ".\\rust-serial\\Cargo.toml"
+    ],
+    "cmake.sourceDirectory": "G:/development/ddf/ddfapp/windows",
+    "dart.flutterSdkPath": ".fvm/flutter_sdk",
+    // Remove .fvm files from search
+    "search.exclude": {
+        "**/.fvm": true
+    },
+    // Remove from file watching
+    "files.watcherExclude": {
+        "**/.fvm": true
+    },
+    "java.configuration.updateBuildConfiguration": "interactive",
+}
