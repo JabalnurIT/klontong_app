@@ -37,7 +37,11 @@ Future<void> _initCore({
 Future<void> _initProvisioning() async {
   sl
     ..registerFactory(
-      () => ProvisioningBloc(),
+      () => ProvisioningBloc(
+        addProduct: sl(),
+        getAllProducts: sl(),
+        getProductById: sl(),
+      ),
     )
     ..registerLazySingleton(() => AddProduct(sl()))
     ..registerLazySingleton(() => GetAllProducts(sl()))

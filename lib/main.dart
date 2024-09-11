@@ -1,5 +1,6 @@
 import 'package:provider/provider.dart';
 
+import 'core/common/app/providers/product_provider.dart';
 import 'core/services/injection_container.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => DashboardController())],
+      providers: [
+        ChangeNotifierProvider(create: (_) => ProductProvider()),
+        ChangeNotifierProvider(create: (_) => DashboardController()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Klontong App',
@@ -29,7 +33,7 @@ class MyApp extends StatelessWidget {
           visualDensity: VisualDensity.adaptivePlatformDensity,
           fontFamily: Fonts.inter,
           appBarTheme: const AppBarTheme(
-            color: Colors.transparent,
+            color: Color.fromARGB(0, 75, 68, 68),
           ),
           colorScheme: ColorScheme.fromSwatch(
             accentColor: Colours.primaryColour,

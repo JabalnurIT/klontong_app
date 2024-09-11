@@ -63,7 +63,7 @@ class ProductModel extends Product {
   ProductModel.fromMap(DataMap map)
       : super(
           id: map['_id'] as String,
-          categoryName: map['category_name'] as String,
+          categoryName: map['categoryName'] as String,
           sku: map['sku'] as String,
           name: map['name'] as String,
           description: map['description'] as String,
@@ -93,7 +93,7 @@ class ProductModel extends Product {
   DataMap toMap() {
     return {
       '_id': id,
-      'category_name': categoryName,
+      'categoryName': categoryName,
       'sku': sku,
       'name': name,
       'description': description,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../src/dashboard/presentation/providers/dashboard_controller.dart';
+import '../common/app/providers/product_provider.dart';
 import '../common/app/providers/tab_navigator.dart';
 
 extension ContextExtensions on BuildContext {
@@ -12,6 +13,8 @@ extension ContextExtensions on BuildContext {
   Size get size => mediaQuery.size;
   double get width => size.width;
   double get height => size.height;
+
+  ProductProvider get productProvider => read<ProductProvider>();
 
   TabNavigator get tabNavigator => read<TabNavigator>();
 

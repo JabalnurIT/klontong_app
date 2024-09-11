@@ -65,7 +65,7 @@ class ProvisioningRemoteDataSourceImpl implements ProvisioningRemoteDataSource {
         ),
       );
 
-      return (result.data['data'] as List)
+      return (result.data as List)
           .map((e) => ProductModel.fromMap(e as DataMap))
           .toList();
     } on DioException catch (e) {

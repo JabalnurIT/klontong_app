@@ -525,6 +525,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
+  number_pagination:
+    dependency: "direct main"
+    description:
+      name: number_pagination
+      sha256: "70f5f2130610c5d5281c52578de228e0cb05a5eaf9bfbf892e7b738c16904d59"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.4"
   package_config:
     dependency: transitive
     description:
