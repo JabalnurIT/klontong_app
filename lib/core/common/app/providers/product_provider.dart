@@ -52,7 +52,7 @@ class ProductProvider extends ChangeNotifier {
 
   List<Product?> _products = [];
 
-  int maxItemsPerPage = 6;
+  int maxItemsPerPage = 8;
 
   List<Product?> get products => _products;
 
@@ -117,5 +117,13 @@ class ProductProvider extends ChangeNotifier {
     'Elektronik',
     'Olahraga',
     'Kesehatan',
+  ];
+
+  List<String> headers = [
+    'Category',
+    'SKU',
+    'Name',
+    'Price',
+    'Action',
   ];
 }

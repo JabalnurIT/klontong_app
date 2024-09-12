@@ -139,6 +139,100 @@ void main() {
   );
 
   group(
+    'deleteProducts',
+    () {
+      test('should complete successfully when no [Exception] is thrown',
+          () async {
+        when(
+          () => dio.delete(
+            any(),
+            data: any(named: 'data'),
+            options: any(named: 'options'),
+          ),
+        ).thenAnswer((_) async => tResponseSuccess);
+
+        final call = dataSource.deleteProduct;
+        expect(
+          () => call(id: "1"),
+          returnsNormally,
+        );
+
+        verify(
+          () => dio.delete(
+            any(),
+            data: any(named: 'data'),
+            options: any(named: 'options'),
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(dio);
+      });
+
+      test(
+        'should throw [ServerException] when [Dio] throws [DioException]',
+        () async {
+          when(
+            () => dio.delete(
+              any(),
+              data: any(named: 'data'),
+              options: any(named: 'options'),
+            ),
+          ).thenThrow(DioException(
+            requestOptions: RequestOptions(path: ''),
+            response: Response(
+              requestOptions: RequestOptions(path: ''),
+              statusCode: 500,
+              data: {'errorMessage': 'Error Occurred'},
+            ),
+          ));
+
+          final call = dataSource.deleteProduct;
+          expect(
+            () => call(id: "1"),
+            throwsA(isA<ServerException>()),
+          );
+
+          verify(
+            () => dio.delete(
+              any(),
+              data: any(named: 'data'),
+              options: any(named: 'options'),
+            ),
+          ).called(1);
+          verifyNoMoreInteractions(dio);
+        },
+      );
+
+      test(
+        'should throw [ServerException] when [Dio] throws [SocketException]',
+        () async {
+          when(
+            () => dio.delete(
+              any(),
+              data: any(named: 'data'),
+              options: any(named: 'options'),
+            ),
+          ).thenThrow(const SocketException("Socket Exception"));
+
+          final call = dataSource.deleteProduct;
+          expect(
+            () => call(id: "1"),
+            throwsA(isA<ServerException>()),
+          );
+
+          verify(
+            () => dio.delete(
+              any(),
+              data: any(named: 'data'),
+              options: any(named: 'options'),
+            ),
+          ).called(1);
+          verifyNoMoreInteractions(dio);
+        },
+      );
+    },
+  );
+
+  group(
     'getAllProducts',
     () {
       test('should complete successfully when no [Exception] is thrown',
@@ -200,23 +294,21 @@ void main() {
         'should throw [ServerException] when [Dio] throws [SocketException]',
         () async {
           when(
-            () => dio.post(
+            () => dio.get(
               any(),
-              data: any(named: 'data'),
               options: any(named: 'options'),
             ),
           ).thenThrow(const SocketException("Socket Exception"));
 
-          final call = dataSource.addProduct;
+          final call = dataSource.getAllProducts;
           expect(
-            () => call(product: tProduct),
+            () => call(),
             throwsA(isA<ServerException>()),
           );
 
           verify(
-            () => dio.post(
+            () => dio.get(
               any(),
-              data: any(named: 'data'),
               options: any(named: 'options'),
             ),
           ).called(1);
@@ -287,21 +379,116 @@ void main() {
         'should throw [ServerException] when [Dio] throws [SocketException]',
         () async {
           when(
-            () => dio.post(
+            () => dio.get(
+              any(),
+              options: any(named: 'options'),
+            ),
+          ).thenThrow(const SocketException("Socket Exception"));
+
+          final call = dataSource.getProductById;
+          expect(
+            () => call(id: "1"),
+            throwsA(isA<ServerException>()),
+          );
+
+          verify(
+            () => dio.get(
+              any(),
+              options: any(named: 'options'),
+            ),
+          ).called(1);
+          verifyNoMoreInteractions(dio);
+        },
+      );
+    },
+  );
+
+  group(
+    'updateProduct',
+    () {
+      test('should complete successfully when no [Exception] is thrown',
+          () async {
+        when(
+          () => dio.put(
+            any(),
+            data: any(named: 'data'),
+            options: any(named: 'options'),
+          ),
+        ).thenAnswer((_) async => tResponseDetailSuccess);
+
+        final result = await dataSource.updateProduct(
+          product: tProduct,
+        );
+
+        expect(result, equals(tProduct));
+
+        verify(
+          () => dio.put(
+            any(),
+            data: any(named: 'data'),
+            options: any(named: 'options'),
+          ),
+        ).called(1);
+        verifyNoMoreInteractions(dio);
+      });
+
+      test(
+        'should throw [ServerException] when [Dio] throws [DioException]',
+        () async {
+          when(
+            () => dio.put(
+              any(),
+              data: any(named: 'data'),
+              options: any(named: 'options'),
+            ),
+          ).thenThrow(DioException(
+            requestOptions: RequestOptions(path: ''),
+            response: Response(
+              requestOptions: RequestOptions(path: ''),
+              statusCode: 500,
+              data: {'errorMessage': 'Error Occurred'},
+            ),
+          ));
+
+          final call = dataSource.updateProduct;
+          expect(
+            () => call(
+              product: tProduct,
+            ),
+            throwsA(isA<ServerException>()),
+          );
+
+          verify(
+            () => dio.put(
+              any(),
+              data: any(named: 'data'),
+              options: any(named: 'options'),
+            ),
+          ).called(1);
+          verifyNoMoreInteractions(dio);
+        },
+      );
+      test(
+        'should throw [ServerException] when [Dio] throws [SocketException]',
+        () async {
+          when(
+            () => dio.put(
               any(),
               data: any(named: 'data'),
               options: any(named: 'options'),
             ),
           ).thenThrow(const SocketException("Socket Exception"));
 
-          final call = dataSource.addProduct;
+          final call = dataSource.updateProduct;
           expect(
-            () => call(product: tProduct),
+            () => call(
+              product: tProduct,
+            ),
             throwsA(isA<ServerException>()),
           );
 
           verify(
-            () => dio.post(
+            () => dio.put(
               any(),
               data: any(named: 'data'),
               options: any(named: 'options'),

@@ -39,13 +39,17 @@ Future<void> _initProvisioning() async {
     ..registerFactory(
       () => ProvisioningBloc(
         addProduct: sl(),
+        deleteProduct: sl(),
         getAllProducts: sl(),
         getProductById: sl(),
+        updateProduct: sl(),
       ),
     )
     ..registerLazySingleton(() => AddProduct(sl()))
+    ..registerLazySingleton(() => DeleteProduct(sl()))
     ..registerLazySingleton(() => GetAllProducts(sl()))
     ..registerLazySingleton(() => GetProductById(sl()))
+    ..registerLazySingleton(() => UpdateProduct(sl()))
     ..registerLazySingleton<ProvisioningRepository>(
         () => ProvisioningRepositoryImpl(sl()))
     ..registerLazySingleton<ProvisioningRemoteDataSource>(

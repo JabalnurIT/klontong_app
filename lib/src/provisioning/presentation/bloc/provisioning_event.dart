@@ -18,6 +18,17 @@ class AddProductEvent extends ProvisioningEvent {
   List<Object> get props => [product];
 }
 
+class DeleteProductEvent extends ProvisioningEvent {
+  const DeleteProductEvent({
+    required this.id,
+  });
+
+  final String id;
+
+  @override
+  List<Object> get props => [id];
+}
+
 class GetAllProductsEvent extends ProvisioningEvent {
   const GetAllProductsEvent();
 }
@@ -31,4 +42,15 @@ class GetProductByIdEvent extends ProvisioningEvent {
 
   @override
   List<Object> get props => [id];
+}
+
+class UpdateProductEvent extends ProvisioningEvent {
+  const UpdateProductEvent({
+    required this.product,
+  });
+
+  final Product product;
+
+  @override
+  List<Object> get props => [product];
 }

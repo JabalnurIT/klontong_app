@@ -13,4 +13,12 @@ abstract class ProvisioningRepository {
   ResultFuture<Product> getProductById({
     required String id,
   });
+
+  ResultFuture<Product> updateProduct({
+    required Product product,
+  });
+
+  ResultVoid deleteProduct({
+    required String id,
+  });
 }

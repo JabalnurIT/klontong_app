@@ -28,6 +28,16 @@ class ProvisioningRepositoryImpl implements ProvisioningRepository {
   }
 
   @override
+  ResultVoid deleteProduct({required String id}) async {
+    try {
+      await _remoteDataSource.deleteProduct(id: id);
+      return const Right(null);
+    } on ServerException catch (e) {
+      return Left(ServerFailure.fromException(e));
+    }
+  }
+
+  @override
   ResultFuture<List<Product>> getAllProducts() async {
     try {
       final result = await _remoteDataSource.getAllProducts();
@@ -41,6 +51,20 @@ class ProvisioningRepositoryImpl implements ProvisioningRepository {
   ResultFuture<Product> getProductById({required String id}) async {
     try {
       final result = await _remoteDataSource.getProductById(id: id);
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(ServerFailure.fromException(e));
+    }
+  }
+
+  @override
+  ResultFuture<Product> updateProduct({
+    required Product product,
+  }) async {
+    try {
+      final result = await _remoteDataSource.updateProduct(
+        product: ProductModel.fromEntity(product),
+      );
       return Right(result);
     } on ServerException catch (e) {
       return Left(ServerFailure.fromException(e));

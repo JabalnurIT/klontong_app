@@ -12,6 +12,22 @@ Route<dynamic> generateRoute(RouteSettings settings) {
         (_) => const Dashboard(),
         settings: settings,
       );
+    case AddProductScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (_) => sl<ProvisioningBloc>(),
+          child: const AddProductScreen(),
+        ),
+        settings: settings,
+      );
+    case EditProductScreen.routeName:
+      return _pageBuilder(
+        (_) => BlocProvider(
+          create: (_) => sl<ProvisioningBloc>(),
+          child: const EditProductScreen(),
+        ),
+        settings: settings,
+      );
     default:
       return _pageBuilder(
         (_) => const PageUnderConstruction(),

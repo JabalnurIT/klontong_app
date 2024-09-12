@@ -29,6 +29,7 @@ dependencies:
   image_picker: ^1.0.4
   timeline_tile: ^2.0.0
   number_pagination: ^1.1.4
+  scrollable_table_view: ^2.0.3
 
 dev_dependencies:
   flutter_test:

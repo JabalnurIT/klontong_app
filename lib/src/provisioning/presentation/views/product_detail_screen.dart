@@ -1,15 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:klontong_app/core/common/widgets/dialog_confirmation.dart';
+import 'package:klontong_app/core/extensions/context_extensions.dart';
+import 'package:klontong_app/src/provisioning/presentation/views/edit_product_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/app/providers/product_provider.dart';
 import '../../../../core/common/widgets/nested_back_button.dart';
 import '../../../../core/res/colours.dart';
+import '../../../../core/services/injection_container.dart';
 import '../bloc/provisioning_bloc.dart';
 
-class ProductDetailScreen extends StatelessWidget {
+class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({super.key});
 
+  @override
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ProductProvider>(
@@ -25,6 +34,14 @@ class ProductDetailScreen extends StatelessWidget {
               );
             } else if (state is ProductLoaded) {
               productProvider.initProductById(state.product);
+            } else if (state is ProductDeleted) {
+              context.pop();
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Product Deleted"),
+                  backgroundColor: Colours.primaryColour,
+                ),
+              );
             }
           },
           builder: (context, state) {
@@ -32,6 +49,60 @@ class ProductDetailScreen extends StatelessWidget {
               appBar: AppBar(
                 scrolledUnderElevation: 0,
                 backgroundColor: Colours.primaryColour,
+                actions: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            context.push(BlocProvider(
+                              create: (_) => sl<ProvisioningBloc>(),
+                              child: const EditProductScreen(),
+                            ));
+                          },
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        IconButton(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (_) {
+                                return DialogConfirmation(
+                                  title: "Delete Product?",
+                                  icon: IconButton(
+                                    onPressed: () {
+                                      context.read<ProvisioningBloc>().add(
+                                            DeleteProductEvent(
+                                              id: productProvider.product!.id,
+                                            ),
+                                          );
+                                      Navigator.pop(context);
+                                      context.pop();
+                                    },
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colours.errorColour,
+                                      size: 120,
+                                    ),
+                                  ),
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
                 leading: const NestedBackButton(),
                 title: Text(
                   productProvider.product!.name,

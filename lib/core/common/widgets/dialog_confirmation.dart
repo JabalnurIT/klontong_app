@@ -20,7 +20,7 @@ class DialogConfirmation extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       elevation: 0,
-      backgroundColor: Colours.secondaryColour,
+      backgroundColor: Colors.white,
       iconPadding: const EdgeInsets.all(10),
       icon: GestureDetector(
         onTap: () => Navigator.pop(context),
@@ -50,7 +50,7 @@ class DialogConfirmation extends StatelessWidget {
             horizontal: 40,
           ),
           decoration: BoxDecoration(
-            color: backgroundColor ?? Colours.secondaryColour,
+            color: backgroundColor ?? Colours.primaryColour,
             borderRadius: const BorderRadius.all(
               Radius.circular(20),
             ),

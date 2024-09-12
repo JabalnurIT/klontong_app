@@ -16,7 +16,7 @@ final class ProvisioningLoading extends ProvisioningState {
 }
 
 final class ProvisioningError extends ProvisioningState {
-  const ProvisioningError(this.message);
+  const ProvisioningError({required this.message});
 
   final String message;
 
@@ -25,16 +25,11 @@ final class ProvisioningError extends ProvisioningState {
 }
 
 final class ProductAdded extends ProvisioningState {
-  const ProductAdded(this.product);
-
-  final Product product;
-
-  @override
-  List<Object> get props => [product];
+  const ProductAdded();
 }
 
 final class ProductLoaded extends ProvisioningState {
-  const ProductLoaded(this.product);
+  const ProductLoaded({required this.product});
 
   final Product product;
 
@@ -43,10 +38,23 @@ final class ProductLoaded extends ProvisioningState {
 }
 
 final class ProductsLoaded extends ProvisioningState {
-  const ProductsLoaded(this.products);
+  const ProductsLoaded({required this.products});
 
   final List<Product> products;
 
   @override
   List<Object> get props => [products];
+}
+
+final class ProductDeleted extends ProvisioningState {
+  const ProductDeleted();
+}
+
+final class ProductUpdated extends ProvisioningState {
+  const ProductUpdated({required this.product});
+
+  final Product product;
+
+  @override
+  List<Object> get props => [product];
 }

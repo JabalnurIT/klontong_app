@@ -4,6 +4,7 @@ import 'package:klontong_app/core/extensions/context_extensions.dart';
 import 'package:klontong_app/src/provisioning/presentation/bloc/provisioning_bloc.dart';
 import 'package:number_pagination/number_pagination.dart';
 import 'package:provider/provider.dart';
+import 'package:scrollable_table_view/scrollable_table_view.dart';
 
 import '../../../../core/common/app/providers/product_provider.dart';
 import '../../../../core/res/colours.dart';
@@ -22,9 +23,9 @@ class _ProductsScreenState extends State<ProductsScreen> {
   late TextEditingController _searchController;
   @override
   void initState() {
+    super.initState();
     context.read<ProvisioningBloc>().add(const GetAllProductsEvent());
     _searchController = TextEditingController();
-    super.initState();
   }
 
   @override
@@ -45,10 +46,13 @@ class _ProductsScreenState extends State<ProductsScreen> {
             child: Consumer<ProductProvider>(
               builder: (_, productProvider, __) {
                 return SizedBox(
-                  height: MediaQuery.of(context).size.height,
+                  height: MediaQuery.of(context).size.height * 0.86,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
+                      const Expanded(
+                        child: SizedBox(),
+                      ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: NumberPagination(
@@ -155,7 +159,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
                         ],
                       ),
                       SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.8,
+                        height: MediaQuery.of(context).size.height * 0.65,
                         child: state is ProvisioningLoading
                             ? const Center(
                                 child: Align(
@@ -166,84 +170,107 @@ class _ProductsScreenState extends State<ProductsScreen> {
                                 ),
                               )
                             : productProvider.productsOnPage.isNotEmpty
-                                ? GridView.builder(
-                                    gridDelegate:
-                                        const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 8.0,
-                                    ),
-                                    padding: const EdgeInsets.all(16.0),
-                                    itemCount:
-                                        productProvider.productsOnPage.length,
-                                    itemBuilder: (context, index) {
-                                      return GestureDetector(
-                                        onTap: () {
-                                          productProvider.initProductById(
-                                              productProvider
-                                                  .productsOnPage[index]!);
-                                          context.push(BlocProvider(
-                                            create: (_) =>
-                                                sl<ProvisioningBloc>(),
-                                            child: const ProductDetailScreen(),
-                                          ));
-                                        },
-                                        child: Container(
-                                          margin: const EdgeInsets.all(10),
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10, vertical: 20),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.grey
-                                                    .withOpacity(0.5),
-                                                spreadRadius: 1,
-                                                blurRadius: 4,
-                                                offset: const Offset(3, 4),
-                                              ),
-                                            ],
+                                ? Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4.0),
+                                    child: ScrollableTableView(
+                                      headers:
+                                          productProvider.headers.map((label) {
+                                        return TableViewHeader(
+                                          label: label,
+                                          textStyle: const TextStyle(
+                                            color: Colours.primaryColour,
+                                            fontSize: 12,
                                           ),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              // image
-                                              ClipRRect(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                child: Image.network(
-                                                  productProvider
-                                                      .productsOnPage[index]!
-                                                      .image!,
-                                                  width: 90,
-                                                  fit: BoxFit.cover,
-                                                ),
+                                        );
+                                      }).toList(),
+                                      rows: productProvider.productsOnPage
+                                          .map((record) {
+                                        return TableViewRow(height: 60, cells: [
+                                          TableViewCell(
+                                            child: Text(
+                                              record!.categoryName,
+                                              style: const TextStyle(
+                                                color: Colours.primaryColour,
+                                                fontSize: 12,
                                               ),
-                                              Text(
+                                            ),
+                                          ),
+                                          TableViewCell(
+                                            child: Text(
+                                              record.sku,
+                                              style: const TextStyle(
+                                                color: Colours.primaryColour,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
+                                          TableViewCell(
+                                            child: Text(
+                                              record.name,
+                                              style: const TextStyle(
+                                                color: Colours.primaryColour,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
+                                          TableViewCell(
+                                            child: Text(
+                                              "Rp${record.price}",
+                                              style: const TextStyle(
+                                                color: Colours.primaryColour,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
+                                          TableViewCell(
+                                            child: IconButton(
+                                              onPressed: () {
                                                 productProvider
-                                                    .productsOnPage[index]!
-                                                    .name,
-                                                style: const TextStyle(
-                                                  color: Colours.primaryColour,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
+                                                    .initProductById(record);
+                                                context.push(BlocProvider(
+                                                  create: (_) =>
+                                                      sl<ProvisioningBloc>(),
+                                                  child:
+                                                      const ProductDetailScreen(),
+                                                ));
+                                              },
+                                              icon: const Icon(
+                                                Icons.edit_square,
+                                                color: Colours.secondaryColour,
                                               ),
-                                              Text(
-                                                'Rp. ${productProvider.productsOnPage[index]!.price}',
-                                                style: const TextStyle(
-                                                  color: Colours.primaryColour,
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ],
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    })
+                                        ]);
+                                      }).toList(),
+                                    ),
+                                  )
+                                // GridView.builder(
+                                //     gridDelegate:
+                                //         const SliverGridDelegateWithFixedCrossAxisCount(
+                                //       crossAxisCount: 2,
+                                //       crossAxisSpacing: 8.0,
+                                //     ),
+                                //     padding: const EdgeInsets.all(16.0),
+                                //     itemCount:
+                                //         productProvider.productsOnPage.length,
+                                //     itemBuilder: (context, index) {
+                                //       return ProductsGrid(
+                                //         onTap: () {
+                                //           productProvider.initProductById(
+                                //               productProvider
+                                //                   .productsOnPage[index]!);
+                                //           context.push(BlocProvider(
+                                //             create: (_) =>
+                                //                 sl<ProvisioningBloc>(),
+                                //             child: const ProductDetailScreen(),
+                                //           ));
+                                //         },
+                                //         products:
+                                //             productProvider.productsOnPage,
+                                //         index: index,
+                                //       );
+                                //     })
                                 : const Center(
                                     child: Text(
                                       'No data found',

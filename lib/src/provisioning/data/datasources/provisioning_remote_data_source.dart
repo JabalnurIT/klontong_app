@@ -16,10 +16,18 @@ abstract class ProvisioningRemoteDataSource {
     required ProductModel product,
   });
 
+  Future<void> deleteProduct({
+    required String id,
+  });
+
   Future<List<ProductModel>> getAllProducts();
 
   Future<ProductModel> getProductById({
     required String id,
+  });
+
+  Future<ProductModel> updateProduct({
+    required ProductModel product,
   });
 }
 
@@ -42,6 +50,33 @@ class ProvisioningRemoteDataSourceImpl implements ProvisioningRemoteDataSource {
       await _dio.post(
         _api.provisioning.product,
         data: result,
+        options: Options(
+          headers: ApiHeaders.getHeaders().headers,
+        ),
+      );
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.response?.statusMessage ?? "Error Occurred",
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on SocketException catch (_) {
+      throw const ServerException(
+        message: "Failed, check your internet connection",
+        statusCode: 503,
+      );
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
+  }
+
+  @override
+  Future<void> deleteProduct({required String id}) async {
+    try {
+      await _dio.delete(
+        "${_api.provisioning.product}/$id",
         options: Options(
           headers: ApiHeaders.getHeaders().headers,
         ),
@@ -118,6 +153,40 @@ class ProvisioningRemoteDataSourceImpl implements ProvisioningRemoteDataSource {
       // await Future.delayed(const Duration(seconds: 3));
 
       // return ProductModel.empty(id: id);
+    } on DioException catch (e) {
+      throw ServerException(
+        message: e.response?.statusMessage ?? "Error Occurred",
+        statusCode: e.response?.statusCode ?? 500,
+      );
+    } on SocketException catch (_) {
+      throw const ServerException(
+        message: "Failed, check your internet connection",
+        statusCode: 503,
+      );
+    } on ServerException {
+      rethrow;
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+      throw ServerException(message: e.toString(), statusCode: 505);
+    }
+  }
+
+  @override
+  Future<ProductModel> updateProduct({
+    required ProductModel product,
+  }) async {
+    try {
+      final result = product.toMap();
+      result.remove("_id");
+      await _dio.put(
+        "${_api.provisioning.product}/${product.id}",
+        data: result,
+        options: Options(
+          headers: ApiHeaders.getHeaders().headers,
+        ),
+      );
+
+      return ProductModel.fromEntity(product);
     } on DioException catch (e) {
       throw ServerException(
         message: e.response?.statusMessage ?? "Error Occurred",

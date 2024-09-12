@@ -4,77 +4,107 @@ import 'package:klontong_app/core/extensions/context_extensions.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/common/app/providers/product_provider.dart';
-import '../../../../core/common/widgets/app_bar_core.dart';
+import '../../../../core/common/widgets/nested_back_button.dart';
 import '../../../../core/res/colours.dart';
 import '../../../../core/utils/core_utils.dart';
 import '../../domain/entities/product.dart';
 import '../bloc/provisioning_bloc.dart';
 import '../widgets/product_form.dart';
 
-class AddProductScreen extends StatefulWidget {
-  const AddProductScreen({super.key});
+class EditProductScreen extends StatefulWidget {
+  const EditProductScreen({super.key});
 
-  static const routeName = '/add-product';
+  static const routeName = '/edit-product';
 
   @override
-  State<AddProductScreen> createState() => _AddProductScreenState();
+  State<EditProductScreen> createState() => _EditProductScreenState();
 }
 
-class _AddProductScreenState extends State<AddProductScreen> {
-  late TextEditingController _categoryNameController;
-  late TextEditingController _skuController;
-  late TextEditingController _nameController;
-  late TextEditingController _descriptionController;
-  late TextEditingController _weightController;
-  late TextEditingController _widthController;
-  late TextEditingController _lengthController;
-  late TextEditingController _heightController;
-  late TextEditingController _imageController;
-  late TextEditingController _priceController;
+class _EditProductScreenState extends State<EditProductScreen> {
+  final TextEditingController _categoryNameController = TextEditingController();
+  final TextEditingController _skuController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
+  final TextEditingController _widthController = TextEditingController();
+  final TextEditingController _lengthController = TextEditingController();
+  final TextEditingController _heightController = TextEditingController();
+  final TextEditingController _imageController = TextEditingController();
+  final TextEditingController _priceController = TextEditingController();
+  Product _product = const Product.empty();
   final productKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    _categoryNameController = TextEditingController();
-    _skuController = TextEditingController();
-    _nameController = TextEditingController();
-    _descriptionController = TextEditingController();
-    _weightController = TextEditingController();
-    _widthController = TextEditingController();
-    _lengthController = TextEditingController();
-    _heightController = TextEditingController();
-    _imageController = TextEditingController();
-    _priceController = TextEditingController();
-    fillData();
+    initController(context.productProvider.product!);
+    initListener;
   }
 
-  void fillData() {
-    _categoryNameController.text = 'Makanan';
-    _skuController.text = 'MHZVTK';
-    _nameController.text = 'Indomie';
-    _descriptionController.text =
-        'Ciki ciki yang super enak, hanya di toko klontong kami';
-    _weightController.text = '500';
-    _widthController.text = '5';
-    _lengthController.text = '5';
-    _heightController.text = '5';
-    _imageController.text =
-        'https://cf.shopee.co.id/file/7cb930d1bd183a435f4fb3e5cc4a896b';
-    _priceController.text = '30000';
+  void initController(Product product) {
+    _product = product;
+    _categoryNameController.text = product.categoryName;
+    _skuController.text = product.sku;
+    _nameController.text = product.name;
+    _descriptionController.text = product.description;
+    _weightController.text = product.weight.toString();
+    _widthController.text = product.width.toString();
+    _lengthController.text = product.length.toString();
+    _heightController.text = product.height.toString();
+    _imageController.text = product.image!;
+    _priceController.text = product.price.toString();
+    setState(() {});
   }
 
-  void clearData() {
-    _skuController.clear();
-    _nameController.clear();
-    _descriptionController.clear();
-    _weightController.clear();
-    _widthController.clear();
-    _lengthController.clear();
-    _heightController.clear();
-    _imageController.clear();
-    _priceController.clear();
+  void get initListener {
+    _categoryNameController.addListener(() => setState(() {}));
+    _skuController.addListener(() => setState(() {}));
+    _nameController.addListener(() => setState(() {}));
+    _descriptionController.addListener(() => setState(() {}));
+    _weightController.addListener(() => setState(() {}));
+    _widthController.addListener(() => setState(() {}));
+    _lengthController.addListener(() => setState(() {}));
+    _heightController.addListener(() => setState(() {}));
+    _imageController.addListener(() => setState(() {}));
+    _priceController.addListener(() => setState(() {}));
   }
+
+  bool get categoryNameChanged =>
+      _product.categoryName != _categoryNameController.text.trim();
+
+  bool get skuChanged => _product.sku != _skuController.text.trim();
+
+  bool get nameChanged => _product.name != _nameController.text.trim();
+
+  bool get descriptionChanged =>
+      _product.description != _descriptionController.text.trim();
+
+  bool get weightChanged =>
+      _product.weight != int.parse(_weightController.text);
+
+  bool get widthChanged => _product.width != int.parse(_widthController.text);
+
+  bool get lengthChanged =>
+      _product.length != int.parse(_lengthController.text);
+
+  bool get heightChanged =>
+      _product.height != int.parse(_heightController.text);
+
+  bool get imageChanged => _product.image != _imageController.text.trim();
+
+  bool get priceChanged => _product.price != int.parse(_priceController.text);
+
+  bool get nothingChanged =>
+      !categoryNameChanged &&
+      !skuChanged &&
+      !nameChanged &&
+      !descriptionChanged &&
+      !weightChanged &&
+      !widthChanged &&
+      !lengthChanged &&
+      !heightChanged &&
+      !imageChanged &&
+      !priceChanged;
 
   @override
   void dispose() {
@@ -94,21 +124,31 @@ class _AddProductScreenState extends State<AddProductScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppBarCore(
-        title: 'Add Product',
-        centerTitle: true,
+      appBar: AppBar(
+        scrolledUnderElevation: 0,
+        backgroundColor: Colours.primaryColour,
+        leading: const NestedBackButton(),
+        title: const Text(
+          "Edit Product",
+          style: TextStyle(
+            fontWeight: FontWeight.w700,
+            fontSize: 20,
+            color: Colors.white,
+          ),
+        ),
       ),
       backgroundColor: Colors.white,
       body: BlocConsumer<ProvisioningBloc, ProvisioningState>(
         listener: (_, state) {
           if (state is ProvisioningError) {
             CoreUtils.showSnackBar(context, state.message);
-          } else if (state is ProductAdded) {
+          } else if (state is ProductUpdated) {
+            context.productProvider.product = state.product;
+            initController(state.product);
             CoreUtils.showSnackBar(
               context,
               'Product added successfully',
             );
-            clearData();
           }
         },
         builder: (context, state) {
@@ -141,17 +181,21 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       const SizedBox(height: 8),
                       Center(
                         child: IgnorePointer(
-                          ignoring: state is ProvisioningLoading,
+                          ignoring:
+                              nothingChanged || state is ProvisioningLoading,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                backgroundColor: Colours.secondaryColour),
+                              foregroundColor: Colors.white,
+                              backgroundColor: nothingChanged
+                                  ? Colours.secondaryColour.withOpacity(0.5)
+                                  : Colours.secondaryColour,
+                            ),
                             onPressed: () {
                               if (productKey.currentState!.validate()) {
                                 context.read<ProvisioningBloc>().add(
-                                      AddProductEvent(
+                                      UpdateProductEvent(
                                         product: Product(
-                                          id: "",
+                                          id: productProvider.product!.id,
                                           categoryName:
                                               _categoryNameController.text,
                                           sku: _skuController.text,
@@ -184,7 +228,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                         ? const CircularProgressIndicator(
                                             color: Colors.white,
                                           )
-                                        : const Text('Add Product')),
+                                        : const Text('Update Product')),
                               ),
                             ),
                           ),
