@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
@@ -34,18 +36,25 @@ class ProvisioningRemoteDataSourceImpl implements ProvisioningRemoteDataSource {
   @override
   Future<void> addProduct({required ProductModel product}) async {
     try {
+      DataMap result = product.toMap();
+      result.remove("_id");
+
       await _dio.post(
         _api.provisioning.product,
-        data: product.toMap(),
+        data: result,
         options: Options(
           headers: ApiHeaders.getHeaders().headers,
         ),
       );
     } on DioException catch (e) {
       throw ServerException(
-        message:
-            e.response?.data['errorMessage'] as String? ?? "Error Occurred",
+        message: e.response?.statusMessage ?? "Error Occurred",
         statusCode: e.response?.statusCode ?? 500,
+      );
+    } on SocketException catch (_) {
+      throw const ServerException(
+        message: "Failed, check your internet connection",
+        statusCode: 503,
       );
     } on ServerException {
       rethrow;
@@ -68,11 +77,23 @@ class ProvisioningRemoteDataSourceImpl implements ProvisioningRemoteDataSource {
       return (result.data as List)
           .map((e) => ProductModel.fromMap(e as DataMap))
           .toList();
+      // await Future.delayed(const Duration(seconds: 3));
+
+      // return List.generate(
+      //   100,
+      //   (index) => ProductModel.empty(
+      //     id: index.toString(),
+      //   ),
+      // );
     } on DioException catch (e) {
       throw ServerException(
-        message:
-            e.response?.data['errorMessage'] as String? ?? "Error Occurred",
+        message: e.response?.statusMessage ?? "Error Occurred",
         statusCode: e.response?.statusCode ?? 500,
+      );
+    } on SocketException catch (_) {
+      throw const ServerException(
+        message: "Failed, check your internet connection",
+        statusCode: 503,
       );
     } on ServerException {
       rethrow;
@@ -92,12 +113,20 @@ class ProvisioningRemoteDataSourceImpl implements ProvisioningRemoteDataSource {
         ),
       );
 
-      return ProductModel.fromMap(result.data['data'] as DataMap);
+      return ProductModel.fromMap(result.data as DataMap);
+
+      // await Future.delayed(const Duration(seconds: 3));
+
+      // return ProductModel.empty(id: id);
     } on DioException catch (e) {
       throw ServerException(
-        message:
-            e.response?.data['errorMessage'] as String? ?? "Error Occurred",
+        message: e.response?.statusMessage ?? "Error Occurred",
         statusCode: e.response?.statusCode ?? 500,
+      );
+    } on SocketException catch (_) {
+      throw const ServerException(
+        message: "Failed, check your internet connection",
+        statusCode: 503,
       );
     } on ServerException {
       rethrow;

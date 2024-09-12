@@ -7,7 +7,9 @@ import 'package:provider/provider.dart';
 
 import '../../../../core/common/app/providers/product_provider.dart';
 import '../../../../core/res/colours.dart';
+import '../../../../core/services/injection_container.dart';
 import '../../../../core/utils/core_utils.dart';
+import 'product_detail_screen.dart';
 
 class ProductsScreen extends StatefulWidget {
   const ProductsScreen({super.key});
@@ -39,210 +41,226 @@ class _ProductsScreenState extends State<ProductsScreen> {
           }
         },
         builder: (context, state) {
-          return state is ProvisioningLoading
-              ? SizedBox(
+          return SingleChildScrollView(
+            child: Consumer<ProductProvider>(
+              builder: (_, productProvider, __) {
+                return SizedBox(
                   height: MediaQuery.of(context).size.height,
-                  child: const Center(
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: CircularProgressIndicator(
-                        color: Colours.primaryColour,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: NumberPagination(
+                          onPageChanged: (int pageNumber) {
+                            productProvider.changePage(pageNumber - 1);
+                          },
+                          visiblePagesCount: 7,
+                          totalPages: productProvider.page,
+                          currentPage: productProvider.indexPage + 1,
+                          selectedButtonColor: Colours.secondaryColour,
+                          buttonRadius: 8,
+                          sectionSpacing: 4,
+                        ),
                       ),
-                    ),
-                  ),
-                )
-              : SingleChildScrollView(
-                  child: Consumer<ProductProvider>(
-                    builder: (_, productProvider, __) {
-                      return productProvider.products.isNotEmpty
-                          ? SizedBox(
-                              height: MediaQuery.of(context).size.height,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10.0),
-                                    child: NumberPagination(
-                                      onPageChanged: (int pageNumber) {
-                                        productProvider
-                                            .changePage(pageNumber - 1);
-                                      },
-                                      visiblePagesCount: 7,
-                                      totalPages: productProvider.page,
-                                      currentPage:
-                                          productProvider.indexPage + 1,
-                                      selectedButtonColor:
-                                          Colours.secondaryColour,
-                                      buttonRadius: 8,
-                                      sectionSpacing: 4,
-                                    ),
-                                  ),
-                                  // SearchBar
-                                  Container(
-                                    height: 40,
-                                    margin: const EdgeInsets.symmetric(
-                                        vertical: 16, horizontal: 20),
-                                    padding: const EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: Colours.secondaryColour,
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey.withOpacity(0.5),
-                                          spreadRadius: 1,
-                                          blurRadius: 7,
-                                          offset: const Offset(0, 4),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.search,
-                                          color: Colors.white,
-                                          size: 20,
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Expanded(
-                                          child: TextField(
-                                            controller: _searchController,
-                                            decoration: const InputDecoration(
-                                              hintText: 'Search',
-                                              border: InputBorder.none,
-                                              hintStyle: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                            ),
-                                            cursorColor: Colors.white,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                            onTapOutside: (_) {
-                                              FocusScope.of(context).unfocus();
-                                            },
-                                            onChanged: (value) {
-                                              productProvider
-                                                  .searchProduct(value);
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: MediaQuery.of(context).size.height *
-                                        0.8,
-                                    child: productProvider
-                                            .productsOnPage.isNotEmpty
-                                        ? GridView.builder(
-                                            gridDelegate:
-                                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 2,
-                                              crossAxisSpacing: 8.0,
-                                            ),
-                                            padding: const EdgeInsets.all(16.0),
-                                            itemCount: productProvider
-                                                .productsOnPage.length,
-                                            itemBuilder: (context, index) {
-                                              return Container(
-                                                margin:
-                                                    const EdgeInsets.all(10),
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 20),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Colors.grey
-                                                          .withOpacity(0.5),
-                                                      spreadRadius: 1,
-                                                      blurRadius: 4,
-                                                      offset:
-                                                          const Offset(3, 4),
-                                                    ),
-                                                  ],
-                                                ),
-                                                child: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceEvenly,
-                                                  children: [
-                                                    // image
-                                                    ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      child: Image.network(
-                                                        productProvider
-                                                            .productsOnPage[
-                                                                index]!
-                                                            .image!,
-                                                        width: 90,
-                                                        fit: BoxFit.cover,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      productProvider
-                                                          .productsOnPage[
-                                                              index]!
-                                                          .name,
-                                                      style: const TextStyle(
-                                                        color: Colours
-                                                            .primaryColour,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      'Rp. ${productProvider.productsOnPage[index]!.price}',
-                                                      style: const TextStyle(
-                                                        color: Colours
-                                                            .primaryColour,
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
-                                            })
-                                        : const Center(
-                                            child: Text(
-                                              'No data found',
-                                              style: TextStyle(
-                                                color: Colours.primaryColour,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
+                      // SearchBar
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 40,
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 16, horizontal: 20),
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colours.secondaryColour,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 1,
+                                    blurRadius: 7,
+                                    offset: const Offset(0, 4),
                                   ),
                                 ],
                               ),
-                            )
-                          : SizedBox(
-                              height: MediaQuery.of(context).size.height,
-                              child: const Center(
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.search,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    child: TextField(
+                                      controller: _searchController,
+                                      decoration: const InputDecoration(
+                                        hintText: 'Search',
+                                        border: InputBorder.none,
+                                        hintStyle: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                      cursorColor: Colors.white,
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                      onTapOutside: (_) {
+                                        FocusScope.of(context).unfocus();
+                                      },
+                                      onChanged: (value) {
+                                        productProvider.searchProduct(value);
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          // Refresh Page
+                          GestureDetector(
+                            onTap: () {
+                              context
+                                  .read<ProvisioningBloc>()
+                                  .add(const GetAllProductsEvent());
+                            },
+                            child: Container(
+                              height: 40,
+                              width: 40,
+                              margin: const EdgeInsets.only(
+                                  top: 16, bottom: 16, right: 20),
+                              decoration: BoxDecoration(
+                                color: Colours.secondaryColour,
+                                borderRadius: BorderRadius.circular(10),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.5),
+                                    spreadRadius: 1,
+                                    blurRadius: 7,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                              ),
+                              child: const Icon(
+                                Icons.refresh,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.8,
+                        child: state is ProvisioningLoading
+                            ? const Center(
                                 child: Align(
                                   alignment: Alignment.center,
-                                  child: Text('No data found'),
+                                  child: CircularProgressIndicator(
+                                    color: Colours.primaryColour,
+                                  ),
                                 ),
-                              ),
-                            );
-                    },
+                              )
+                            : productProvider.productsOnPage.isNotEmpty
+                                ? GridView.builder(
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 8.0,
+                                    ),
+                                    padding: const EdgeInsets.all(16.0),
+                                    itemCount:
+                                        productProvider.productsOnPage.length,
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          productProvider.initProductById(
+                                              productProvider
+                                                  .productsOnPage[index]!);
+                                          context.push(BlocProvider(
+                                            create: (_) =>
+                                                sl<ProvisioningBloc>(),
+                                            child: const ProductDetailScreen(),
+                                          ));
+                                        },
+                                        child: Container(
+                                          margin: const EdgeInsets.all(10),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 20),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.grey
+                                                    .withOpacity(0.5),
+                                                spreadRadius: 1,
+                                                blurRadius: 4,
+                                                offset: const Offset(3, 4),
+                                              ),
+                                            ],
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              // image
+                                              ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: Image.network(
+                                                  productProvider
+                                                      .productsOnPage[index]!
+                                                      .image!,
+                                                  width: 90,
+                                                  fit: BoxFit.cover,
+                                                ),
+                                              ),
+                                              Text(
+                                                productProvider
+                                                    .productsOnPage[index]!
+                                                    .name,
+                                                style: const TextStyle(
+                                                  color: Colours.primaryColour,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                              Text(
+                                                'Rp. ${productProvider.productsOnPage[index]!.price}',
+                                                style: const TextStyle(
+                                                  color: Colours.primaryColour,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    })
+                                : const Center(
+                                    child: Text(
+                                      'No data found',
+                                      style: TextStyle(
+                                        color: Colours.primaryColour,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                      ),
+                    ],
                   ),
                 );
+              },
+            ),
+          );
         },
       ),
     );

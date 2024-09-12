@@ -37,8 +37,7 @@ class ProductProvider extends ChangeNotifier {
                   .contains(_searchQuery.toLowerCase()) ||
               element.description
                   .toLowerCase()
-                  .contains(_searchQuery.toLowerCase()) ||
-              element.id.toLowerCase().contains(_searchQuery.toLowerCase()),
+                  .contains(_searchQuery.toLowerCase()),
         )
         .toList();
 
@@ -50,13 +49,6 @@ class ProductProvider extends ChangeNotifier {
     _productsOnPage = result.sublist(start, end);
     notifyListeners();
   }
-
-  // set productsOnPage(List<List<Product?>> productsOnPage) {
-  //   if (_productsOnPage != productsOnPage) {
-  //     _productsOnPage = productsOnPage;
-  //     Future.delayed(Duration.zero, notifyListeners);
-  //   }
-  // }
 
   List<Product?> _products = [];
 
@@ -116,4 +108,14 @@ class ProductProvider extends ChangeNotifier {
     initProductsOnPage(_products, maxItemsPerPage);
     notifyListeners();
   }
+
+  List<String> categories = [
+    'Cemilan',
+    'Makanan',
+    'Minuman',
+    'Pakaian',
+    'Elektronik',
+    'Olahraga',
+    'Kesehatan',
+  ];
 }

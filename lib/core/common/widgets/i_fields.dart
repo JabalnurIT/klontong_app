@@ -78,7 +78,12 @@ class IFields extends StatelessWidget {
         contentPadding: const EdgeInsets.symmetric(horizontal: 20),
         filled: filled,
         fillColor: fillColor,
-        suffixIcon: suffixIcon,
+        suffixIcon: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            suffixIcon ?? const SizedBox.shrink(),
+          ],
+        ),
         hintText: hintText,
         hintStyle: hintStyle ??
             const TextStyle(

@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 import '../../extensions/context_extensions.dart';
-import '../../res/colours.dart';
 
 class NestedBackButton extends StatelessWidget {
   const NestedBackButton({super.key, this.onPressed});
 
-  // onPressed
   final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      // onPopInvoked: (_) => context.pop(),
       onPopInvokedWithResult: (_, result) {
         try {
           onPressed?.call();
@@ -22,7 +19,7 @@ class NestedBackButton extends StatelessWidget {
         }
       },
       child: IconButton(
-        color: Colours.secondaryColour,
+        color: Colors.white,
         iconSize: 30,
         icon: Icon(
           Theme.of(context).platform == TargetPlatform.iOS

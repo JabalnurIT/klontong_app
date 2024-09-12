@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:klontong_app/core/errors/exceptions.dart';
@@ -29,21 +31,15 @@ void main() {
   });
 
   final tResponseSuccess = Response<dynamic>(
-    data: {
-      'message': 'Success',
-      'data': [
-        for (final product in tProducts) product.toMap(),
-      ]
-    },
+    data: [
+      for (final product in tProducts) product.toMap(),
+    ],
     statusCode: 200,
     requestOptions: RequestOptions(path: ''),
   );
 
   final tResponseDetailSuccess = Response<dynamic>(
-    data: {
-      'message': 'Success',
-      'data': tProduct.toMap(),
-    },
+    data: tProduct.toMap(),
     statusCode: 200,
     requestOptions: RequestOptions(path: ''),
   );
@@ -94,6 +90,34 @@ void main() {
               data: {'errorMessage': 'Error Occurred'},
             ),
           ));
+
+          final call = dataSource.addProduct;
+          expect(
+            () => call(product: tProduct),
+            throwsA(isA<ServerException>()),
+          );
+
+          verify(
+            () => dio.post(
+              any(),
+              data: any(named: 'data'),
+              options: any(named: 'options'),
+            ),
+          ).called(1);
+          verifyNoMoreInteractions(dio);
+        },
+      );
+
+      test(
+        'should throw [ServerException] when [Dio] throws [SocketException]',
+        () async {
+          when(
+            () => dio.post(
+              any(),
+              data: any(named: 'data'),
+              options: any(named: 'options'),
+            ),
+          ).thenThrow(const SocketException("Socket Exception"));
 
           final call = dataSource.addProduct;
           expect(
@@ -171,6 +195,34 @@ void main() {
           verifyNoMoreInteractions(dio);
         },
       );
+
+      test(
+        'should throw [ServerException] when [Dio] throws [SocketException]',
+        () async {
+          when(
+            () => dio.post(
+              any(),
+              data: any(named: 'data'),
+              options: any(named: 'options'),
+            ),
+          ).thenThrow(const SocketException("Socket Exception"));
+
+          final call = dataSource.addProduct;
+          expect(
+            () => call(product: tProduct),
+            throwsA(isA<ServerException>()),
+          );
+
+          verify(
+            () => dio.post(
+              any(),
+              data: any(named: 'data'),
+              options: any(named: 'options'),
+            ),
+          ).called(1);
+          verifyNoMoreInteractions(dio);
+        },
+      );
     },
   );
 
@@ -225,6 +277,33 @@ void main() {
           verify(
             () => dio.get(
               any(),
+              options: any(named: 'options'),
+            ),
+          ).called(1);
+          verifyNoMoreInteractions(dio);
+        },
+      );
+      test(
+        'should throw [ServerException] when [Dio] throws [SocketException]',
+        () async {
+          when(
+            () => dio.post(
+              any(),
+              data: any(named: 'data'),
+              options: any(named: 'options'),
+            ),
+          ).thenThrow(const SocketException("Socket Exception"));
+
+          final call = dataSource.addProduct;
+          expect(
+            () => call(product: tProduct),
+            throwsA(isA<ServerException>()),
+          );
+
+          verify(
+            () => dio.post(
+              any(),
+              data: any(named: 'data'),
               options: any(named: 'options'),
             ),
           ).called(1);

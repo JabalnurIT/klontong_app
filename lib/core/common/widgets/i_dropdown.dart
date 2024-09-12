@@ -25,8 +25,14 @@ class IDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
-      iconSize: 50,
-      icon: suffixIcon,
+      iconSize: 30,
+      icon: Padding(
+        padding: const EdgeInsets.only(right: 8.0),
+        child: suffixIcon ??
+            const Icon(
+              Icons.arrow_drop_down,
+            ),
+      ),
       iconEnabledColor: Colours.primaryColour,
       value: controller.text == '' ? null : controller.text,
       onChanged: (value) {
@@ -45,10 +51,10 @@ class IDropdown extends StatelessWidget {
       items: items ?? [],
       dropdownColor: fillColor,
       style: const TextStyle(
-          fontSize: 36,
-          fontWeight: FontWeight.bold,
-          fontFamily: Fonts.inter,
-          color: Colours.primaryColour),
+        fontSize: 15,
+        fontFamily: Fonts.inter,
+        color: Colours.primaryColour,
+      ),
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
