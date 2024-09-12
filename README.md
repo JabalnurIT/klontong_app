@@ -1,8 +1,8 @@
-|----------|-------------------------------|
-| Name     | Github Link                   |  
-| Jabalnur | https://github.com/JabalnurIT |
-| Date     | 12-09-2024                    |
-|----------|-------------------------------|
+
+| Name     | Github Link                   | Date       |
+|----------|-------------------------------|------------|
+| Jabalnur | https://github.com/JabalnurIT | 12-09-2024 |
+
 
 
 
