@@ -102,24 +102,24 @@ class ProvisioningRemoteDataSourceImpl implements ProvisioningRemoteDataSource {
   @override
   Future<List<ProductModel>> getAllProducts() async {
     try {
-      final result = await _dio.get(
-        _api.provisioning.product,
-        options: Options(
-          headers: ApiHeaders.getHeaders().headers,
-        ),
-      );
-
-      return (result.data as List)
-          .map((e) => ProductModel.fromMap(e as DataMap))
-          .toList();
-      // await Future.delayed(const Duration(seconds: 3));
-
-      // return List.generate(
-      //   100,
-      //   (index) => ProductModel.empty(
-      //     id: index.toString(),
+      // final result = await _dio.get(
+      //   _api.provisioning.product,
+      //   options: Options(
+      //     headers: ApiHeaders.getHeaders().headers,
       //   ),
       // );
+
+      // return (result.data as List)
+      //     .map((e) => ProductModel.fromMap(e as DataMap))
+      //     .toList();
+      // await Future.delayed(const Duration(seconds: 3));
+
+      return List.generate(
+        100,
+        (index) => ProductModel.empty(
+          id: index.toString(),
+        ),
+      );
     } on DioException catch (e) {
       throw ServerException(
         message: e.response?.statusMessage ?? "Error Occurred",

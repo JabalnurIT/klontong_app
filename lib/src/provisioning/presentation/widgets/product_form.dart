@@ -49,249 +49,247 @@ class ProductForm extends StatelessWidget {
   Widget build(BuildContext context) {
     return Form(
       key: productKey,
-      child: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: context.width * 0.4,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Category Name',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colours.primaryColour,
-                        ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: context.width * 0.4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Category Name',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colours.primaryColour,
                       ),
-                      IDropdown(
-                        controller: _categoryNameController,
-                        items: List<DropdownMenuItem<String>>.generate(
-                          _categories.length,
-                          (index) {
-                            return DropdownMenuItem(
-                              value: _categories[index],
-                              child: Text(
-                                _categories[index],
-                              ),
-                            );
-                          },
-                        ),
+                    ),
+                    IDropdown(
+                      controller: _categoryNameController,
+                      items: List<DropdownMenuItem<String>>.generate(
+                        _categories.length,
+                        (index) {
+                          return DropdownMenuItem(
+                            value: _categories[index],
+                            child: Text(
+                              _categories[index],
+                            ),
+                          );
+                        },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  width: context.width * 0.4,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'SKU',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colours.primaryColour,
-                        ),
-                      ),
-                      IFields(
-                        controller: _skuController,
-                        hintText: 'SKU',
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Name',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colours.primaryColour,
               ),
-            ),
-            IFields(
-              controller: _nameController,
-              hintText: 'Name',
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Description',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colours.primaryColour,
+              SizedBox(
+                width: context.width * 0.4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'SKU',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colours.primaryColour,
+                      ),
+                    ),
+                    IFields(
+                      controller: _skuController,
+                      hintText: 'SKU',
+                    ),
+                  ],
+                ),
               ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Name',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colours.primaryColour,
             ),
-            IFields(
-              controller: _descriptionController,
-              hintText: 'Description',
+          ),
+          IFields(
+            controller: _nameController,
+            hintText: 'Name',
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Description',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colours.primaryColour,
             ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: context.width * 0.4,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Weight',
+          ),
+          IFields(
+            controller: _descriptionController,
+            hintText: 'Description',
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: context.width * 0.4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Weight',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colours.primaryColour,
+                      ),
+                    ),
+                    IFields(
+                      controller: _weightController,
+                      hintText: 'Weight',
+                      keyboardType: TextInputType.number,
+                      suffixIcon: const Text(
+                        'Kg',
                         style: TextStyle(
                           fontSize: 16,
-                          fontWeight: FontWeight.bold,
                           color: Colours.primaryColour,
                         ),
+                        textAlign: TextAlign.center,
                       ),
-                      IFields(
-                        controller: _weightController,
-                        hintText: 'Weight',
-                        keyboardType: TextInputType.number,
-                        suffixIcon: const Text(
-                          'Kg',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colours.primaryColour,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  width: context.width * 0.4,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Width',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colours.primaryColour,
-                        ),
-                      ),
-                      IFields(
-                        controller: _widthController,
-                        hintText: 'Width',
-                        keyboardType: TextInputType.number,
-                        suffixIcon: const Text(
-                          'cm',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colours.primaryColour,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                  width: context.width * 0.4,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Length',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colours.primaryColour,
-                        ),
-                      ),
-                      IFields(
-                        controller: _lengthController,
-                        hintText: 'Length',
-                        keyboardType: TextInputType.number,
-                        suffixIcon: const Text(
-                          'cm',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colours.primaryColour,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  width: context.width * 0.4,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Height',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colours.primaryColour,
-                        ),
-                      ),
-                      IFields(
-                        controller: _heightController,
-                        hintText: 'Height',
-                        keyboardType: TextInputType.number,
-                        suffixIcon: const Text(
-                          'cm',
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colours.primaryColour,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Image URL',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colours.primaryColour,
               ),
-            ),
-            IFields(
-              controller: _imageController,
-              hintText: 'Image URL',
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Harga',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colours.primaryColour,
+              SizedBox(
+                width: context.width * 0.4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Width',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colours.primaryColour,
+                      ),
+                    ),
+                    IFields(
+                      controller: _widthController,
+                      hintText: 'Width',
+                      keyboardType: TextInputType.number,
+                      suffixIcon: const Text(
+                        'cm',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colours.primaryColour,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
               ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(
+                width: context.width * 0.4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Length',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colours.primaryColour,
+                      ),
+                    ),
+                    IFields(
+                      controller: _lengthController,
+                      hintText: 'Length',
+                      keyboardType: TextInputType.number,
+                      suffixIcon: const Text(
+                        'cm',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colours.primaryColour,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: context.width * 0.4,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Height',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colours.primaryColour,
+                      ),
+                    ),
+                    IFields(
+                      controller: _heightController,
+                      hintText: 'Height',
+                      keyboardType: TextInputType.number,
+                      suffixIcon: const Text(
+                        'cm',
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: Colours.primaryColour,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Image URL',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colours.primaryColour,
             ),
-            IFields(
-              controller: _priceController,
-              hintText: 'Harga',
-              keyboardType: TextInputType.number,
+          ),
+          IFields(
+            controller: _imageController,
+            hintText: 'Image URL',
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Harga',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colours.primaryColour,
             ),
-          ],
-        ),
+          ),
+          IFields(
+            controller: _priceController,
+            hintText: 'Harga',
+            keyboardType: TextInputType.number,
+          ),
+        ],
       ),
     );
   }

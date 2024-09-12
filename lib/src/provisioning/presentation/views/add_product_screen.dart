@@ -46,22 +46,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
     _heightController = TextEditingController();
     _imageController = TextEditingController();
     _priceController = TextEditingController();
-    fillData();
-  }
-
-  void fillData() {
-    _categoryNameController.text = 'Makanan';
-    _skuController.text = 'MHZVTK';
-    _nameController.text = 'Indomie';
-    _descriptionController.text =
-        'Ciki ciki yang super enak, hanya di toko klontong kami';
-    _weightController.text = '500';
-    _widthController.text = '5';
-    _lengthController.text = '5';
-    _heightController.text = '5';
-    _imageController.text =
-        'https://cf.shopee.co.id/file/7cb930d1bd183a435f4fb3e5cc4a896b';
-    _priceController.text = '30000';
   }
 
   void clearData() {
@@ -122,75 +106,77 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 ),
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height * 0.8,
-                  child: Column(
-                    children: [
-                      ProductForm(
-                        productKey: productKey,
-                        categoryNameController: _categoryNameController,
-                        skuController: _skuController,
-                        nameController: _nameController,
-                        descriptionController: _descriptionController,
-                        weightController: _weightController,
-                        widthController: _widthController,
-                        lengthController: _lengthController,
-                        heightController: _heightController,
-                        imageController: _imageController,
-                        priceController: _priceController,
-                        categories: productProvider.categories,
-                      ),
-                      const SizedBox(height: 8),
-                      Center(
-                        child: IgnorePointer(
-                          ignoring: state is ProvisioningLoading,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                foregroundColor: Colors.white,
-                                backgroundColor: Colours.secondaryColour),
-                            onPressed: () {
-                              if (productKey.currentState!.validate()) {
-                                context.read<ProvisioningBloc>().add(
-                                      AddProductEvent(
-                                        product: Product(
-                                          id: "",
-                                          categoryName:
-                                              _categoryNameController.text,
-                                          sku: _skuController.text,
-                                          name: _nameController.text,
-                                          description:
-                                              _descriptionController.text,
-                                          weight:
-                                              int.parse(_weightController.text),
-                                          width:
-                                              int.parse(_widthController.text),
-                                          length:
-                                              int.parse(_lengthController.text),
-                                          height:
-                                              int.parse(_heightController.text),
-                                          image: _imageController.text,
-                                          price:
-                                              int.parse(_priceController.text),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ProductForm(
+                          productKey: productKey,
+                          categoryNameController: _categoryNameController,
+                          skuController: _skuController,
+                          nameController: _nameController,
+                          descriptionController: _descriptionController,
+                          weightController: _weightController,
+                          widthController: _widthController,
+                          lengthController: _lengthController,
+                          heightController: _heightController,
+                          imageController: _imageController,
+                          priceController: _priceController,
+                          categories: productProvider.categories,
+                        ),
+                        const SizedBox(height: 8),
+                        Center(
+                          child: IgnorePointer(
+                            ignoring: state is ProvisioningLoading,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.white,
+                                  backgroundColor: Colours.secondaryColour),
+                              onPressed: () {
+                                if (productKey.currentState!.validate()) {
+                                  context.read<ProvisioningBloc>().add(
+                                        AddProductEvent(
+                                          product: Product(
+                                            id: "",
+                                            categoryName:
+                                                _categoryNameController.text,
+                                            sku: _skuController.text,
+                                            name: _nameController.text,
+                                            description:
+                                                _descriptionController.text,
+                                            weight: int.parse(
+                                                _weightController.text),
+                                            width: int.parse(
+                                                _widthController.text),
+                                            length: int.parse(
+                                                _lengthController.text),
+                                            height: int.parse(
+                                                _heightController.text),
+                                            image: _imageController.text,
+                                            price: int.parse(
+                                                _priceController.text),
+                                          ),
                                         ),
-                                      ),
-                                    );
-                              }
-                            },
-                            child: SizedBox(
-                              width: context.width * 0.3,
-                              height: 50,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Center(
-                                    child: state is ProvisioningLoading
-                                        ? const CircularProgressIndicator(
-                                            color: Colors.white,
-                                          )
-                                        : const Text('Add Product')),
+                                      );
+                                }
+                              },
+                              child: SizedBox(
+                                width: context.width * 0.3,
+                                height: 50,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Center(
+                                      child: state is ProvisioningLoading
+                                          ? const CircularProgressIndicator(
+                                              color: Colors.white,
+                                            )
+                                          : const Text('Add Product')),
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               );

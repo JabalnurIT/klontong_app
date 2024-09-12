@@ -1,6 +1,7 @@
 import 'package:provider/provider.dart';
 
 import 'core/common/app/providers/product_provider.dart';
+import 'core/services/error_reporting.dart';
 import 'core/services/injection_container.dart';
 import 'package:flutter/material.dart';
 
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    initUXCam();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => ProductProvider()),
