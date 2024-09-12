@@ -1,40 +1,90 @@
-# To-Do List Application
-## Petunjuk pengerjaan Frontend Coding Tes:
-To-do List Application adalah sebuah aplikasi yang biasa digunakan untuk menulis hal-hal yang perlu digunakan.
-Dalam sebuah to-do list application, hal-hal yang biasanya bisa dilakukan adalah mencatat hal-hal yang perlu
-dilakukan dalam bentuk poin-poin, dan menandai hal-hal tersebut apabila sudah selesai dilakukan. Salah satu contoh
-aplikasi to-do list yang bisa digunakan adalah Google Keep.
+|----------|-------------------------------|
+| Name     | Github Link                   |  
+|----------|-------------------------------|
+| Jabalnur | https://github.com/JabalnurIT |
+|----------|-------------------------------|
+| Date     | 12-09-2024                    |
+|----------|-------------------------------|
 
-Berdasarkan gambar 2, to do list application juga biasanya menyediakan fitur untuk mengelompokan hal-hal yang
-perlu dikerjakan dalam catatan-catatan kecil, misalkan untuk checklist harian.
-Untuk memastikan catatan yang dibuka adalah milik kamu, sebuah to-do list application biasanya dilengkapi fitur login.
-Hal tersebut memastikan catatan yang dibuka di aplikasi adalah catatan yang telah kamu tuliskan sebelumnya.
-Buatlah sebuah to-do list application simple, dengan fitur-fitur sebagai berikut:
-1. Halaman login (DONE)
-2. Halaman daftar baru (DONE)
-3. Halaman untuk membuat checklist (berdasarkan contoh gambar 2, adalah kotak-kotak yang berwarna) (DONE)
-4. Action untuk menghapus checklist
-5. Halaman untuk menampilkan checklist-checklist yang sudah dibuat (DONE)
-6. Halaman Detail Checklist (Berisi item-item to-do yang sudah dibuat)
-7. Halaman untuk membuat item-item to-do di dalam checklist
-8. Halaman detail item
-9. Action untuk mengubah item-item di dalam checklist
-10. Action untuk mengubah status dari item di dalam checklist (misalkan item sudah selesai dilakukan)
-11. Action untuk menghapus item dari checklist
 
-Note:
-Action dan halaman tidak harus sama dengan contoh gambar.
-Fitur nomor 3-11 hanya bisa diakses atau dilakukan apabila sudah login
-Fitur-fitur yang dibuat harap mengimplementasikan API yang sudah disediakan. API dapat diakses melalui
 
-http://94.74.86.174:8080/api/swagger-ui.html#/. API dapat dicoba melalui aplikasi Postman atau Insomnia API (atau aplikasi-
-aplikasi API lain yang pernah anda gunakan)
+# Klontong, the Mobile Project
 
-Selain melalui link di atas, dokumentasi API juga dapat dilihat melalui dokumen yang telah kami lampirkan.
-Fitur login diimplementasi menggunakan bearer token.
+A small convenience store wants to enter the 21st century by selling their products online.
 
-## Teknologi yang Digunakan
+### Details
 
-- **Flutter**: Framework untuk pengembangan aplikasi mobile lintas platform (iOS dan Android)
-- **Dart**: Bahasa pemrograman yang digunakan oleh Flutter
-- **Domain-Driven Design (DDD)**: Arsitektur perangkat lunak yang memisahkan kode menjadi 3 layer utama, yaitu data, domain, dan presentasi
+**Basic Overview:**
+
+> As the child of the convenience store owner, I need to manage the products we sell in a table format.
+
+From an engineer's perspective, consider this as just a CRUD application.
+
+Your backend colleagues will prepare a RESTful API, but they are delayed. However, you still need to demonstrate features while the API is being developed. Your team has decided that the API will be mocked up first. As a highly skilled mobile developer, this responsibility falls on you.
+
+Here is the mobile stack you **_must_** use for this project:
+
+- Flutter
+- Bloc/Provider/Cubit
+
+_Hint_: There’s an automatic online CRUD backend: <br/>
+[https://crudcrud.com/](https://crudcrud.com/)
+
+### More Technical Details
+
+The entire team has agreed on some specifications and technical limitations:
+
+- All request and response payloads are in JSON format.
+- There is a data schema.
+- There are about 100 products that need to be managed, so use pagination techniques.
+- The designated pages:
+  - List all products with search and pagination features
+  - Product details
+  - Add a product
+- State persistence. If you need to save a token (for authentication), make sure it’s stored securely.
+
+Example schema:
+
+```json
+{
+  "id": 86,
+  "CategoryId": 14,
+  "categoryName": "Cemilan",
+  "sku": "MHZVTK",
+  "name": "Ciki ciki",
+  "description": "Ciki ciki yang super enak, hanya di toko klontong kami",
+  "weight": 500,
+  "width": 5,
+  "length": 5,
+  "height": 5,
+  "image": "https://cf.shopee.co.id/file/7cb930d1bd183a435f4fb3e5cc4a896b",
+  "harga": 30000
+}
+```
+
+Don't forget, your team is international, so do your best to work in English.
+
+### Extra features
+
+Your team doesn’t expect these, but it would be nice to see:
+
+- Error reporting. Sometimes we don’t know what issues are happening on different phone models. How can we get this data?
+- TDD (Test-Driven Development), to give you confidence that all the code you write is well-tested.
+- Applying SOLID principles.
+
+KISS (Keep It Stupid Simple) - Don’t forget, your target audience might not be tech-savvy.
+
+### What we care about
+
+Use whatever libraries you are familiar with as if this were a real production app. Code design and cleanliness are more important than choosing the "right" library. Always strive to use best practices!
+
+### Important!!
+If you use environment variables, don’t forget to share them with us along with any credentials we might need.
+
+### Closing
+
+Don’t forget to set your GitHub repo to public and share it with us.
+
+Happy coding!
+
+Please submit your finished test to [bit.ly/4cWYsiX](https://bit.ly/4cWYsiX)
